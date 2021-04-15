@@ -39,20 +39,24 @@ This application running with python 3.7
 
 ### Prerequisites
 
-* [https://docs.chocolatey.org/en-us/choco/setup](Chocolatey)   
-  ```powershell
-  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-  ```
-  ```
-  choco upgrade chocolatey
-  ```
-* [https://www.python.org/](Python)
-  ```chocolatey
-  choco install -y python3
-  ```
-  ```python
-  python -V
-  ```
+* [Chocolatey](https://docs.chocolatey.org/en-us/choco/setup)  
+  1. Install Chocolatey using powershell
+    ```powershell
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    ```
+  2. Upgrade Chocolatey (optional)
+    ```
+    choco upgrade chocolatey
+    ```
+* [Python](https://www.python.org/)
+  1. Install Python using chocolatey
+    ```chocolatey
+    choco install -y python3
+    ```
+  2. Check Python version
+    ```python
+    python -V
+    ```
 ### Installation
 
 1. Create python virtual env
