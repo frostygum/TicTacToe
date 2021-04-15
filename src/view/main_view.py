@@ -17,9 +17,9 @@ class MainView(QMainWindow):
         self._centralWidget.setLayout(self.generalLayout)
         # Create the display and the buttons
         self.size = 3
-        self._createTicTacToeGrid()
+        self.createTicTacToeGrid()
 
-    def _createTicTacToeGrid(self):
+    def createTicTacToeGrid(self):
         """Create Tic Tac Toe Grid based on size, so that the grid is equal to size x size"""
         self.buttons = [[0] * self.size] * self.size
         buttonsLayout = QGridLayout()
