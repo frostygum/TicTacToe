@@ -1,10 +1,9 @@
 
+<!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 
 <!-- TABLE OF CONTENTS -->
@@ -31,6 +30,8 @@
 ## About The Project
 
 TicTacToe is Python based Multiplayer TicTacToe game using TCP socket.
+
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -71,6 +72,8 @@ This application running with python 3.7
    ```sh
    pip install -r requirements.txt
    ```
+
+
 
 <!-- LICENSE -->
 ## License
