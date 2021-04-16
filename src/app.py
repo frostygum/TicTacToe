@@ -21,10 +21,12 @@ class App(QApplication):
         self.main_view = MainView()
         self.main_controller = MainController(self.main_view)
         self.main_view.show()
-    
+
 def main():
     app = App(sys.argv)
-    sys.exit(app.exec_())
+    exec = app.exec_()
+    app.main_controller.disconnect()
+    sys.exit(exec)
 
 if __name__ == '__main__':
     suppress_qt_warnings()
