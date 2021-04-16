@@ -30,7 +30,7 @@ class Server():
                     connected = False
 
                 print(f"[{addr}] {msg}")
-                conn.send("Msg received".encode(self.FORMAT))
+                conn.send(msg.encode(self.FORMAT))
 
         conn.close()
         self.client.pop()
