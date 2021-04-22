@@ -1,4 +1,5 @@
 import socket
+import threading
 import sys
 
 class Client():
@@ -8,31 +9,51 @@ class Client():
         self.ADDR = (self.HOST, self.PORT)
         self.HEADER = 1024
         self.FORMAT = 'utf-8'
-        self.DISCONNECT_MESSAGE = "!DISCONNECT"
+        self.DISCONNECT_MESSAGE = '!DISCONNECT'
         self.create_socket()
 
     def create_socket(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect(self.ADDR)
+        self.client.connect(self.ADDR) 
+
+    def handle_reply(self):
+        print('[NEW CONNECTION] {} connected.'.format(self.ADDR))
+        connected = True
+        
+        while connected:
+            try:
+                msg = self.client.recv(self.HEADER).decode(self.FORMAT)
+                if msg == self.DISCONNECT_MESSAGE:
+                    connected = False
+            except:
+                print('Error')
+                connected = False
+                break
+
+            print('[{}] {}'.format(self.ADDR, msg))
+
+    def create_host(self):
+        thread = threading.Thread(target = self.handle_reply)
+        thread.start()
 
     def send(self, msg):
         message = msg.encode(self.FORMAT)
-        msg_length = len(message)
-        send_length = str(msg_length).encode(self.FORMAT)
-        send_length += b' ' * (self.HEADER - len(send_length))
-        self.client.send(send_length)
         self.client.send(message)
-
-    def recv(self):
-        return self.client.recv(self.HEADER).decode(self.FORMAT)
 
     def disconnect(self):
         self.send(self.DISCONNECT_MESSAGE)
 
-if __name__ == '__main__':
-    try:
-        client = Client()
-        client.send(input())
-    except KeyboardInterrupt:
-        print('Interrupted')
-        sys.exit(0)
+    def start(self):
+        self.create_host()
+        # while True:
+        #     reply = input()
+        #     self.send(reply)
+
+# if __name__ == '__main__':
+#     client = Client()
+#     try: 
+#         client.start()
+#     except KeyboardInterrupt:
+#         print('Interrupted')
+#         client.disconnect()
+#         sys.exit(0)
