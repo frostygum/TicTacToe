@@ -43,9 +43,10 @@ class StartController():
 
         #! Run the game when ip valid
         if self.checkIpValidity():
+            self.app.setTargetIp(self.app.startView.inputIp.text())
             self.app.setRole('host')
             self.app.clearBoard()
             self.app.initServerThread()
             self.app.serverThread.start()
         else:
-            self.showDialog('Silahkan Isi Ip address terlebih dahulu', 'Alert')
+            self.showDialog('Please fill Ip address first', 'Alert')

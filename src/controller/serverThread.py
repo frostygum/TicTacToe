@@ -30,7 +30,7 @@ class ServerThread():
         self.serverReceiveWorker.moveToThread(self.serverReceiveThread)
 
         #! Emited when thread signal and worker signal started
-        self.serverReceiveThread.started.connect(self.serverReceiveWorker.run)
+        self.serverReceiveThread.started.connect(partial(self.serverReceiveWorker.run, host=self.app.targetIp))
         self.serverReceiveWorker.started.connect(partial(self.app.startView.createStatusBar, 'Waiting for Connection'))
         #! Emited when worker signal connected, means connected to client
         self.serverReceiveWorker.connected.connect(self.sendState)
@@ -39,6 +39,8 @@ class ServerThread():
         self.serverReceiveWorker.connected.connect(partial(self.app.gameView.createStatusBar, 'Connected to {}:{}'.format(self.serverReceiveWorker.HOST, self.serverReceiveWorker.PORT)))
         #! Emited when worker signal received, means received data(game state)
         self.serverReceiveWorker.received.connect(self.handleReceivedData)
+        #! Emited when worker signal error, means server can'y bind to given address
+        self.serverReceiveWorker.error.connect(self.handleError)
         
         #! Start the thread
         self.serverReceiveThread.start()
@@ -59,6 +61,13 @@ class ServerThread():
 
         state = self.app.board.toJSON()
         self.serverReceiveWorker.send(state)
+
+    def handleError(self):
+        """Function to handle error when creating socket"""
+
+        self.app.showDialog(msg='Failed to connect to given address', title='Error')
+        self.serverReceiveThread.terminate()
+        self.serverReceiveWorker = None
 
     def stop(self):
         """Function to properly stop the server"""

@@ -19,6 +19,7 @@ class ServerReceive(QObject):
     connected = pyqtSignal(bool)
     received = pyqtSignal(str)
     disconnected = pyqtSignal(bool)
+    error = pyqtSignal(bool)
     #! Initialize class scope variables
     DEFAULT_HOST = '127.0.0.1'
     DEFAULT_PORT = 7000
@@ -27,17 +28,21 @@ class ServerReceive(QObject):
     HEADER = 1024
     FORMAT = 'utf-8'
     DISCONNECT_MESSAGE = '!DISCONNECT'
-    # client = None
-    # server = None
 
     def createSocket(self):
         """Function to create socket at given address"""
 
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.bind((self.HOST, self.PORT))
-        self.server.listen(1)
-        #! Send started signal
-        self.started.emit(True)
+        try:
+            self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server.bind((self.HOST, self.PORT))
+            self.server.listen(1)
+            #! Send started signal
+            self.started.emit(True)
+            return True
+        except Exception as e:
+            print('ERROR', e)
+            self.error.emit(True)
+            return False
 
     def handleReceive(self):
         """Function to handle receiving json game data"""
@@ -91,9 +96,10 @@ class ServerReceive(QObject):
         #! Bind given param to class scope variable
         if host != None: self.HOST = host
         if port != None: self.PORT = port
-        self.createSocket()
-        print('[LISTENING] Server is listening on {}'.format(self.HOST))
-        self.waitClient()
+        
+        if self.createSocket():
+            print('[LISTENING] Server is listening on {}'.format(self.HOST))
+            self.waitClient()
 
     def stop(self):
         """Function to properly close socket connection"""

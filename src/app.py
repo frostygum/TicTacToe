@@ -27,6 +27,7 @@ class App(QApplication):
         self.navigationWidget = QStackedWidget()
         self.board = Board()
         self.role = None
+        self.targetIp = None
 
         self.startView = StartView()
         self.gameView = GameView()
@@ -86,6 +87,11 @@ class App(QApplication):
         """Function to change app role"""
 
         self.role = role
+
+    def setTargetIp(self, ipAddress):
+        """Function to change app target ip address"""
+
+        self.targetIp = ipAddress
 
     def showDialog(self, msg, title, callback = None):
         """Function to show Alert Dialog"""
