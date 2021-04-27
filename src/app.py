@@ -1,16 +1,15 @@
-#!/usr/bin/env python
 
+#! Import required python built-in modules
 import sys
 from os import environ
+#! Import required PyQt5 modules
 from PyQt5.QtWidgets import QApplication, QStackedWidget
-
+#! Import required self-made modules
 from view.start_view import StartView
 from view.game_view import GameView 
 from controller.start_controller import StartController
 from controller.game_controller import GameController
 from model.board import Board
-
-__version__ = '0.1'
 
 def suppress_qt_warnings():
     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
@@ -21,9 +20,10 @@ def suppress_qt_warnings():
 class App(QApplication):
     def __init__(self, sys_argv):
         super(App, self).__init__(sys_argv)
-        views = {}
-        views['start'] = StartView()
-        views['game'] = GameView()
+        views = {
+            'start': StartView(),
+            'game': GameView()
+        }
         self.navigationWidget = QStackedWidget()
 
         board = Board()
