@@ -31,6 +31,7 @@ class Client():
                 break
 
             print('[{}] {}'.format(self.ADDR, msg))
+        self.client.close()
 
     def create_host(self):
         thread = threading.Thread(target = self.handle_reply)
@@ -45,15 +46,18 @@ class Client():
 
     def start(self):
         self.create_host()
-        # while True:
-        #     reply = input()
-        #     self.send(reply)
+        try:
+            while True:
+                reply = input()
+                self.send(reply)
+        except:
+            print('error')
 
-# if __name__ == '__main__':
-#     client = Client()
-#     try: 
-#         client.start()
-#     except KeyboardInterrupt:
-#         print('Interrupted')
-#         client.disconnect()
-#         sys.exit(0)
+if __name__ == '__main__':
+    client = Client()
+    try: 
+        client.start()
+    except KeyboardInterrupt:
+        print('Interrupted')
+        client.disconnect()
+        sys.exit(0)

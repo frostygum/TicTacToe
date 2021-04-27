@@ -4,7 +4,7 @@ from resources.client import Client
 from model.board import Board
 
 class GameController(BaseController):
-    def __init__(self, navigationWidget, views, board):
+    def __init__(self, navigationWidget, views, board, serverThread):
         BaseController.__init__(self, navigationWidget, views)
         self.board = board
         self.gameView.createTicTacToeGrid()
