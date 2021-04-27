@@ -35,7 +35,7 @@ class GameController():
 
         if self.checkGameWinner() == False:
             self.app.board.switchTurn()
-            # self.checkRightTurn()
+            self.checkRightTurn()
 
     def handleReceiveUpdate(self, gameBoard):
         """Function to handle when received update from opponent"""
@@ -51,17 +51,25 @@ class GameController():
 
         if self.checkGameWinner() == False:
             self.app.board.switchTurn()
-            # self.toggleButtons(True)
-            # self.checkRightTurn()
+            self.checkRightTurn()
         print(self.app.board.toJSON())
 
     def checkRightTurn(self):
         """Function to disable all button if current turn is no apropiate"""
 
-        if self.app.board.turn != 'host':
-            self.toggleButtons(False)
-        else:
-            self.toggleButtons(True)
+        #! Set enable or disable to all button with given settings
+        for xPos in range(0, 3):
+            for yPos in  range(0, 3):
+                location = '{}{}'.format(xPos, yPos)
+                #! Disable button when current is not my turn
+                if self.app.board.turn != self.app.role:
+                    self.app.gameView.buttons[location].setEnabled(False)
+                else:
+                    #! Enable only empty button when current is my turn, disable the other
+                    if self.app.board.gameState[location] == None:
+                        self.app.gameView.buttons[location].setEnabled(True)
+                    else:
+                        self.app.gameView.buttons[location].setEnabled(False)
 
     def checkGameWinner(self):
         """Function to check if current state has a winner"""

@@ -36,7 +36,7 @@ class ServerThread():
         self.serverReceiveWorker.connected.connect(self.sendState)
         self.serverReceiveWorker.connected.connect(partial(self.app.changeWindow, 'game'))
         # self.serverReceiveWorker.connected.connect(self.app.gameController.createGameBoard)
-        # self.serverReceiveWorker.connected.connect(partial(self.gameView.createStatusBar, 'Connected to {}:{}'.format(self.serverReceiveWorker.HOST, self.serverReceiveWorker.PORT)))
+        self.serverReceiveWorker.connected.connect(partial(self.app.gameView.createStatusBar, 'Connected to {}:{}'.format(self.serverReceiveWorker.HOST, self.serverReceiveWorker.PORT)))
         #! Emited when worker signal received, means received data(game state)
         self.serverReceiveWorker.received.connect(self.handleReceivedData)
         
