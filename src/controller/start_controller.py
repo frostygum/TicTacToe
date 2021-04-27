@@ -3,10 +3,8 @@
 import sys
 import re
 from functools import partial
-#! Import required self-made modules
-from controller.base_controller import BaseController
 
-class StartController(BaseController):
+class StartController():
     """
         This class is used as StartView Controller
     """
@@ -14,29 +12,23 @@ class StartController(BaseController):
     navigationWidget = None
     mainView = None
 
-    def __init__(self, navigationWidget, views, serverThread, role):
+    def __init__(self, app):
         """Function to initiate start window settings"""
         
-        #! Calling parent class init function
-        BaseController.__init__(self, navigationWidget, views)
-        
-        self.serverThread = serverThread
-        self.role = role
-        self.navigationWidget.setWindowTitle('TicTacToe')
-        self.navigationWidget.setFixedSize(330, 200)
-        self.mainView.createStatusBar('')
+        self.app = app
+        self.app.startView.createStatusBar('')
         self.connectSignals()
             
     def connectSignals(self):
         """Function to give the button ability"""
 
-        self.mainView.buttons['create'].clicked.connect(partial(self.startGame))
-        self.mainView.buttons['join'].clicked.connect(partial(print, 'ok'))
+        self.app.startView.buttons['create'].clicked.connect(partial(self.startGame))
+        self.app.startView.buttons['join'].clicked.connect(partial(print, 'ok'))
 
     def checkIpValidity(self):
         """Function to check given ip valid or not"""
 
-        ipAddress = self.mainView.inputIp
+        ipAddress = self.app.startView.inputIp
         ipAddress = ipAddress.text()
 
         if ipAddress != '':
@@ -51,8 +43,9 @@ class StartController(BaseController):
 
         #! Run the game when ip valid
         if self.checkIpValidity():
-            # self.changeWindow('game')
-            self.role = 'host'
-            self.serverThread.start()
+            self.app.setRole('host')
+            self.app.clearBoard()
+            self.app.initServerThread()
+            self.app.serverThread.start()
         else:
             self.showDialog('Silahkan Isi Ip address terlebih dahulu', 'Alert')
