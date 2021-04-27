@@ -49,7 +49,7 @@ class StartController(BaseController):
     #     self.thread.start()
             
     def connectSignals(self):
-        startBtn = self.mainView.buttons['start']
+        startBtn = self.mainView.buttons['create']
         joinBtn = self.mainView.buttons['join']
         startBtn.clicked.connect(partial(self.changeBtnColor))
         joinBtn.clicked.connect(partial(self.changeBtnColor))
