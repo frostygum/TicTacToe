@@ -2,12 +2,12 @@ from PyQt5.QtWidgets import QMessageBox
 
 class BaseController:
     def __init__(self, navigationWidget, views):
-        self.mainView = views['main']
+        self.mainView = views['start']
         self.gameView = views['game']
         self.navigationWidget = navigationWidget
 
     def changeWindow(self, windowPage):
-        if(windowPage == 'main'):
+        if(windowPage == 'start'):
             window = self.mainView
             self.navigationWidget.setWindowTitle('TicTacToe')
             self.navigationWidget.setFixedSize(330, 200)

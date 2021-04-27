@@ -4,9 +4,9 @@ import sys
 from os import environ
 from PyQt5.QtWidgets import QApplication, QStackedWidget
 
-from view.main_view import MainView
+from view.start_view import StartView
 from view.game_view import GameView 
-from controller.main_controller import MainController
+from controller.start_controller import StartController
 from controller.game_controller import GameController
 from model.board import Board
 
@@ -22,17 +22,17 @@ class App(QApplication):
     def __init__(self, sys_argv):
         super(App, self).__init__(sys_argv)
         views = {}
-        views['main'] = MainView()
+        views['start'] = StartView()
         views['game'] = GameView()
         self.navigationWidget = QStackedWidget()
 
         board = Board()
-        self.main_controller = MainController(self.navigationWidget, views)
+        self.main_controller = StartController(self.navigationWidget, views)
         self.game_controller = GameController(self.navigationWidget, views, board)
 
         self.navigationWidget.setWindowTitle('TicTacToe')
         self.navigationWidget.setFixedSize(330, 200)
-        self.navigationWidget.addWidget(views['main'])
+        self.navigationWidget.addWidget(views['start'])
         self.navigationWidget.show()
 
 def main():

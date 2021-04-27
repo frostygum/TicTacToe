@@ -24,7 +24,7 @@ from resources.client import Client
 #             except:
 #                 pass
 
-class MainController(BaseController):
+class StartController(BaseController):
     def __init__(self, navigationWidget, views):
         BaseController.__init__(self, navigationWidget, views)
         self.navigationWidget.setWindowTitle('TicTacToe')

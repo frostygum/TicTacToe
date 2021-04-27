@@ -3,9 +3,9 @@ from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QHBoxLayout, QMainWindow, 
 from PyQt5.QtGui import QFont, QCursor
 from PyQt5.QtCore import Qt
 
-class MainView(QMainWindow):
+class StartView(QMainWindow):
     def __init__(self):
-        super(MainView, self).__init__()
+        super(StartView, self).__init__()
         self.setStyleSheet('QMainWindow { background-color: pink; }'
                             'QPushButton { background-color: cyan; border: none; padding: 10px; border-radius: 5px; }'
                             'QPushButton:hover { background-color: white; }')

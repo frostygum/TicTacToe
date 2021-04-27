@@ -55,5 +55,5 @@ class GameController(BaseController):
             for yPos in  range(0, self.board.size):
                 location = '{}{}'.format(xPos, yPos)
                 self.gameView.updateButton(' ', location)
-        self.changeWindow('main')
+        self.changeWindow('start')
         
