@@ -18,11 +18,13 @@ class ServerThread(BaseController):
     serverThread = None
     serverWorker = None
 
-    def __init__(self, navigationWidget, views, controller):
+    def __init__(self, navigationWidget, views, controller, board):
         """Function to create box to store widgets"""
 
         #! Calling parent class init function
         BaseController.__init__(self, navigationWidget, views)
+
+        self.board = board
         self.controller = controller
         self.mainView = views['start']
         self.gameView = views['game']
@@ -31,7 +33,6 @@ class ServerThread(BaseController):
         """Function to start the thread"""
 
         #! Thread initiation
-        self.generateGame()
         self.serverThread = QThread()
         self.serverWorker = ServerReceive()
         self.serverWorker.moveToThread(self.serverThread)
@@ -48,7 +49,6 @@ class ServerThread(BaseController):
         self.serverWorker.received.connect(self.handleReceivedData)
         
         #! Start the thread
-        # self.serverThread.setTerminationEnabled(True)
         self.serverThread.start()
 
     def handleReceivedData(self, gameBoard):
@@ -74,11 +74,3 @@ class ServerThread(BaseController):
          #! Stop socket properly then destroy the thread
         self.serverWorker.stop()
         self.serverThread.terminate()
-        #! Clean varible, make sure everthing is erased properly
-        self.serverWorker = None
-        # self.serverThread = None
-
-    def generateGame(self):
-        """Function to generate new game board"""
-
-        self.board = Board()

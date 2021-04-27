@@ -25,14 +25,15 @@ class App(QApplication):
 
         navigationWidget = QStackedWidget()
         board = Board()
+        role = None
         views = {}
         controller = {}
 
         views['start'] = StartView()
         views['game'] = GameView()
-        serverThread = ServerThread(navigationWidget, views, controller)
-        controller['start'] = StartController(navigationWidget, views, serverThread)
-        controller['game'] = GameController(navigationWidget, views, board, serverThread)
+        serverThread = ServerThread(navigationWidget, views, controller, board)
+        controller['start'] = StartController(navigationWidget, views, serverThread, role)
+        controller['game'] = GameController(navigationWidget, views, serverThread, board, role)
         
         navigationWidget.setWindowTitle('TicTacToe')
         navigationWidget.setFixedSize(330, 200)

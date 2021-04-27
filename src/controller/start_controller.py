@@ -14,13 +14,14 @@ class StartController(BaseController):
     navigationWidget = None
     mainView = None
 
-    def __init__(self, navigationWidget, views, serverThread):
+    def __init__(self, navigationWidget, views, serverThread, role):
         """Function to initiate start window settings"""
         
         #! Calling parent class init function
         BaseController.__init__(self, navigationWidget, views)
         
         self.serverThread = serverThread
+        self.role = role
         self.navigationWidget.setWindowTitle('TicTacToe')
         self.navigationWidget.setFixedSize(330, 200)
         self.mainView.createStatusBar('')
@@ -51,6 +52,7 @@ class StartController(BaseController):
         #! Run the game when ip valid
         if self.checkIpValidity():
             # self.changeWindow('game')
+            self.role = 'host'
             self.serverThread.start()
         else:
             self.showDialog('Silahkan Isi Ip address terlebih dahulu', 'Alert')
