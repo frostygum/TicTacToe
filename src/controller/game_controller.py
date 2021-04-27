@@ -7,7 +7,7 @@ class GameController(BaseController):
     def __init__(self, navigationWidget, views, board):
         BaseController.__init__(self, navigationWidget, views)
         self.board = board
-        self.gameView.createTicTacToeGrid(board)
+        self.gameView.createTicTacToeGrid()
         self.connectSignals()
 
     def connectSignals(self):
