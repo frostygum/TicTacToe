@@ -1,70 +1,53 @@
+
+#! Import required python built-in modules
 import sys
 import re
 from functools import partial
-from PyQt5.QtCore import QTimer
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
-
+#! Import required self-made modules
 from controller.base_controller import BaseController
-from resources.client import Client
-
-# class Worker(QObject):
-#     msg_str = pyqtSignal(str)
-
-#     def addClient(self, client):
-#         self.client = client
-
-#     def run(self):
-#         while True:
-#             # Here has error when closing app because of client.recv() is blocking
-#             try:
-#                 msg = self.client.recv()
-#                 if msg:
-#                     self.msg_str.emit(msg)
-#                     print(msg)
-#             except:
-#                 pass
 
 class StartController(BaseController):
+    """
+        This class is used as StartView Controller
+    """
+
+    navigationWidget = None
+    mainView = None
+
     def __init__(self, navigationWidget, views):
+        """Function to initiate start window settings"""
+        
+        #! Calling parent class init function
         BaseController.__init__(self, navigationWidget, views)
+        
         self.navigationWidget.setWindowTitle('TicTacToe')
         self.navigationWidget.setFixedSize(330, 200)
+        self.mainView.createStatusBar('')
         self.connectSignals()
-        # try:
-        #     self.client = Client('127.0.0.1', 7000)
-        #     self.mainView.createStatusBar("Connected to 127.0.0.1:7000")
-        #     self.clientRecv()
-        # except Exception as e:
-        #     print("Error", e)
-        #     self.disconnect()
-        #     sys.exit(1)
-
-    # def clientRecv(self):
-    #     self.thread = QThread()
-    #     self.worker = Worker()
-    #     self.worker.addClient(self.client)
-    #     self.worker.moveToThread(self.thread)
-    #     self.thread.started.connect(self.worker.run)
-    #     self.worker.msg_str.connect(self.changeBtnColor)
-    #     self.thread.start()
             
     def connectSignals(self):
-        startBtn = self.mainView.buttons['create']
-        joinBtn = self.mainView.buttons['join']
-        startBtn.clicked.connect(partial(self.changeBtnColor))
-        joinBtn.clicked.connect(partial(self.changeBtnColor))
+        """Function to give the button ability"""
+
+        self.mainView.buttons['create'].clicked.connect(partial(self.startGame))
+        self.mainView.buttons['join'].clicked.connect(partial(print, 'ok'))
 
     def checkIpValidity(self):
+        """Function to check given ip valid or not"""
+
         ipAddress = self.mainView.inputIp
         ipAddress = ipAddress.text()
 
         if ipAddress != '':
+            #! Regex to match x.x.x.x, where x is 3 length digits
             if re.search(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$', ipAddress):
                 return True
 
         return False
 
-    def changeBtnColor(self):
+    def startGame(self):
+        """Ability for start button to start the game as host"""
+
+        #! Run the game when ip valid
         if self.checkIpValidity():
             self.changeWindow('game')
         else:
