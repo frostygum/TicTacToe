@@ -16,7 +16,7 @@ class ServerReceive(QObject):
 
     #! Preserved thread signals
     started = pyqtSignal(bool)
-    connected = pyqtSignal(bool)
+    connected = pyqtSignal(str)
     received = pyqtSignal(str)
     disconnected = pyqtSignal(bool)
     error = pyqtSignal(bool)
@@ -80,7 +80,10 @@ class ServerReceive(QObject):
         connection, addressInfo = self.server.accept()
         self.client = (connection, addressInfo)
         #! Send connected signal
-        self.connected.emit(True)
+        self.connected.emit(json.dumps({
+            'host': addressInfo[0],
+            'port': addressInfo[1]
+        }))
         #! Start receiving loop
         self.handleReceive()
 

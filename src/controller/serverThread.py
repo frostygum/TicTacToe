@@ -33,10 +33,7 @@ class ServerThread():
         self.serverReceiveThread.started.connect(partial(self.serverReceiveWorker.run, host=self.app.targetIp))
         self.serverReceiveWorker.started.connect(partial(self.app.startView.createStatusBar, 'Waiting for Connection'))
         #! Emited when worker signal connected, means connected to client
-        self.serverReceiveWorker.connected.connect(self.sendState)
-        self.serverReceiveWorker.connected.connect(partial(self.app.changeWindow, 'game'))
-        # self.serverReceiveWorker.connected.connect(self.app.gameController.createGameBoard)
-        self.serverReceiveWorker.connected.connect(partial(self.app.gameView.createStatusBar, 'Connected to {}:{}'.format(self.serverReceiveWorker.HOST, self.serverReceiveWorker.PORT)))
+        self.serverReceiveWorker.connected.connect(self.handleConnected)
         #! Emited when worker signal received, means received data(game state)
         self.serverReceiveWorker.received.connect(self.handleReceivedData)
         #! Emited when worker signal error, means server can'y bind to given address
@@ -62,8 +59,17 @@ class ServerThread():
         state = self.app.board.toJSON()
         self.serverReceiveWorker.send(state)
 
+    def handleConnected(self, addressInfo):
+        """Function to handle new connection emited"""
+
+        addressInfo = json.loads(addressInfo)
+
+        self.sendState()
+        self.app.changeWindow('game')
+        self.app.gameView.createStatusBar('Connected to {}:{}'.format(addressInfo['host'], addressInfo['port']))
+
     def handleError(self):
-        """Function to handle error when creating socket"""
+        """Function to handle error when creating socket emited"""
 
         self.app.showDialog(msg='Failed to connect to given address', title='Error')
         self.serverReceiveThread.terminate()
