@@ -1,4 +1,6 @@
 
+# TicTacToe
+
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
 [![MIT License][license-shield]][license-url]
@@ -34,12 +36,16 @@ TicTacToe is Python based Multiplayer TicTacToe game using TCP socket.
 <!-- ScreenShoots -->
 ## ScreenShoots
 
-*Main Window*
-<img src="docs/main_window.jpg" width="200">
-<img src="docs/waitClient_window.jpg" width="200">
+<div style="text-align: center">
+  <p>*Main Window*</p>
+  <img src="docs/main_window.jpg" width="200">
+  <img src="docs/waitClient_window.jpg" width="200">
+</div>
 
-*Play Window*
-<img src="docs/play_window.jpg" width="200">
+<div style="text-align: center">
+  <p>*Play Window*</p>
+  <img src="docs/play_window.jpg" width="200">
+</div>
 
 <!-- GETTING STARTED -->
 ## Getting Started
