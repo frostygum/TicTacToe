@@ -28,6 +28,7 @@ class GameView(QMainWindow):
         self.setCentralWidget(self.centralWidget)
         self.centralWidget.setLayout(self.verticalLayout)
         self.createTitle()
+        self.createSubTitle()
 
     def createTitle(self):
         """Function to create title"""
@@ -41,8 +42,25 @@ class GameView(QMainWindow):
         titleFontSettings.setPointSize(15)
         titleFontSettings.setWeight(QFont.Bold)
         self.title.setFont(titleFontSettings)
-        self.title.setStyleSheet("margin: 10px 0;")
+        self.title.setStyleSheet("margin: 10px 0 0 0;")
         horizontalLayout.addWidget(self.title)
+        horizontalLayout.setAlignment(Qt.AlignCenter)
+        #! Add Horizontal Box Layout to Vertical Box Layout
+        self.verticalLayout.addLayout(horizontalLayout)
+    
+    def createSubTitle(self):
+        """Function to create subTitle"""
+        
+        #! Create Box Layout to store Title
+        horizontalLayout = QHBoxLayout()
+        #! Create label for Title
+        self.subTitle = QLabel()
+        self.subTitle.setText('')
+        titleFontSettings = QFont()
+        titleFontSettings.setPointSize(9)
+        self.subTitle.setFont(titleFontSettings)
+        self.subTitle.setStyleSheet("margin: 0 0 10px 0;")
+        horizontalLayout.addWidget(self.subTitle)
         horizontalLayout.setAlignment(Qt.AlignCenter)
         #! Add Horizontal Box Layout to Vertical Box Layout
         self.verticalLayout.addLayout(horizontalLayout)

@@ -68,7 +68,7 @@ class App(QApplication):
             window = self.gameView
             controller = self.gameController
             #! Reset sizing
-            self.navigationWidget.setFixedSize(330, 400)
+            self.navigationWidget.setFixedSize(330, 420)
         
         #! Create empty status bar
         window.createStatusBar('')

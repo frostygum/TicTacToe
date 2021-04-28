@@ -72,9 +72,11 @@ class GameController():
                 location = '{}{}'.format(xPos, yPos)
                 #! Disable button when current is not my turn
                 if self.app.board.turn != self.app.role:
+                    self.app.gameView.subTitle.setText('waiting for opponent')
                     self.app.gameView.buttons[location].setEnabled(False)
                 else:
                     #! Enable only empty button when current is my turn, disable the other
+                    self.app.gameView.subTitle.setText('It\'s your turn')
                     if self.app.board.gameState[location] == None:
                         self.app.gameView.buttons[location].setEnabled(True)
                     else:
