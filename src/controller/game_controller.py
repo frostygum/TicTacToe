@@ -29,13 +29,17 @@ class GameController():
         self.app.board.updateLocation(playerSymbol, location)
         self.app.gameView.updateButton(playerSymbol, location, False)
         self.app.board.incrementMove()
-        print(self.app.board.toJSON())
-
-        self.app.serverThread.sendState()
+        self.app.board.switchTurn()
+        
+        if self.app.role == 'host':
+            self.app.serverThread.sendState()
+        else:
+            self.app.clientThread.sendState()
 
         if self.checkGameWinner() == False:
-            self.app.board.switchTurn()
             self.checkRightTurn()
+
+        print(self.app.board.toJSON())
 
     def handleReceiveUpdate(self, gameBoard):
         """Function to handle when received update from opponent"""
@@ -47,12 +51,14 @@ class GameController():
                 self.app.board.updateLocation(symbol, location)
                 self.app.gameView.updateButton(symbol, location, False)
 
-        self.app.board.incrementMove()
+        self.app.board.player = gameBoard['player']
+        self.app.board.turn = gameBoard['turn']
+        self.app.board.move = gameBoard['move']
 
-        if self.checkGameWinner() == False:
-            self.app.board.switchTurn()
-            self.checkRightTurn()
         print(self.app.board.toJSON())
+        
+        if self.checkGameWinner() == False:
+            self.checkRightTurn()
 
     def checkRightTurn(self):
         """Function to disable all button if current turn is no apropiate"""
@@ -126,7 +132,10 @@ class GameController():
     def gameOver(self):
         """Function to handle when received update from opponent"""
 
-        self.app.serverThread.stop()
+        if self.app.role == 'host':
+            self.app.serverThread.stop()
+        else:
+            self.app.clientThread.stop()
         #! Reset all button symbols
         self.app.clearBoard()
         self.app.changeWindow('start')
