@@ -22,8 +22,8 @@ class StartController():
     def connectSignals(self):
         """Function to give the button ability"""
 
-        self.app.startView.buttons['create'].clicked.connect(partial(self.startGame))
-        self.app.startView.buttons['join'].clicked.connect(partial(print, 'ok'))
+        self.app.startView.buttons['create'].clicked.connect(self.startGame)
+        self.app.startView.buttons['join'].clicked.connect(self.joinGame)
 
     def checkIpValidity(self):
         """Function to check given ip valid or not"""
@@ -48,5 +48,18 @@ class StartController():
             self.app.clearBoard()
             self.app.initServerThread()
             self.app.serverThread.start()
+        else:
+            self.showDialog('Please fill Ip address first', 'Alert')
+
+    def joinGame(self):
+        """Ability for join button to join the game to given address"""
+
+        #! Run the game when ip valid
+        if self.checkIpValidity():
+            self.app.setTargetIp(self.app.startView.inputIp.text())
+            self.app.setRole('client')
+            self.app.clearBoard()
+            self.app.initClientThread()
+            self.app.clientThread.start()
         else:
             self.showDialog('Please fill Ip address first', 'Alert')
