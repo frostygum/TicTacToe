@@ -2,7 +2,7 @@
 #! Import required python built-in modules
 from functools import partial
 #! Import required self-made modules
-from model.board import Board
+from src.model.board import Board
 
 class GameController():
     """

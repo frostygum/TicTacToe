@@ -14,12 +14,14 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
+      <a href="#ScreenShoots">ScreenShoots</a>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#building-executeable-distribution">Build Executeable</a></li>
       </ul>
     </li>
     <li><a href="#license">License</a></li>
@@ -94,6 +96,17 @@ This application running with python 3.7
 3. Install python packages
    ```sh
    pip install -r requirements.txt
+   ```
+
+### Building Executeable Distribution
+
+1. Distribution with console openned
+   ```
+   pyinstaller tictactoe.py --onefile --name TicTacToe
+   ```
+2. Distribution without console openned
+   ```sh
+   pyinstaller tictactoe.py -w --onefile --name TicTacToe
    ```
 
 

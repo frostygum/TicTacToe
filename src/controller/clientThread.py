@@ -5,8 +5,8 @@ from functools import partial
 #! Import required PyQt5 modules
 from PyQt5.QtCore import QThread
 #! Import required self-made modules
-from model.board import Board
-from resources.client import ClientReceive
+from src.model.board import Board
+from src.resources.client import ClientReceive
 
 class ClientThread():
     """
