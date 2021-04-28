@@ -62,15 +62,13 @@ class App(QApplication):
             window = self.startView
             controller = self.startController
             #! Reset sizing
-            self.navigationWidget.setWindowTitle('TicTacToe')
             self.navigationWidget.setFixedSize(330, 200)
         elif(windowPage == 'game'):
             #! Goto GGame Page
             window = self.gameView
             controller = self.gameController
             #! Reset sizing
-            self.navigationWidget.setWindowTitle('TicTacToe')
-            self.navigationWidget.setFixedSize(330, 360)
+            self.navigationWidget.setFixedSize(330, 400)
         
         #! Create empty status bar
         window.createStatusBar('')

@@ -1,7 +1,7 @@
 
 #! Import required PyQt5 modules
-from PyQt5.QtWidgets import QGridLayout, QPushButton, QVBoxLayout, QMainWindow, QWidget, QStatusBar
-from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import QGridLayout, QPushButton, QVBoxLayout, QMainWindow, QWidget, QStatusBar, QHBoxLayout, QLabel
+from PyQt5.QtGui import QCursor, QFont
 from PyQt5.QtCore import Qt
 
 class GameView(QMainWindow):
@@ -27,6 +27,25 @@ class GameView(QMainWindow):
         self.centralWidget = QWidget(self)
         self.setCentralWidget(self.centralWidget)
         self.centralWidget.setLayout(self.verticalLayout)
+        self.createTitle()
+
+    def createTitle(self):
+        """Function to create title"""
+        
+        #! Create Box Layout to store Title
+        horizontalLayout = QHBoxLayout()
+        #! Create label for Title
+        self.title = QLabel()
+        self.title.setText('')
+        titleFontSettings = QFont()
+        titleFontSettings.setPointSize(15)
+        titleFontSettings.setWeight(QFont.Bold)
+        self.title.setFont(titleFontSettings)
+        self.title.setStyleSheet("margin: 10px 0;")
+        horizontalLayout.addWidget(self.title)
+        horizontalLayout.setAlignment(Qt.AlignCenter)
+        #! Add Horizontal Box Layout to Vertical Box Layout
+        self.verticalLayout.addLayout(horizontalLayout)
 
     def createTicTacToeGrid(self):
         """Create Tic Tac Toe Grid based on size, so that the grid is equal to size x size"""

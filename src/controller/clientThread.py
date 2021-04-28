@@ -74,7 +74,7 @@ class ClientThread():
 
         addressInfo = json.loads(addressInfo)
 
-        # self.sendState()
+        self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
         self.app.changeWindow('game')
         self.app.gameView.createStatusBar('Connected to {}:{}'.format(addressInfo['host'], addressInfo['port']))
 
