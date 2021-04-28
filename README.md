@@ -87,4 +87,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [license-shield]: https://img.shields.io/github/license/frostygum/TicTacToe.svg?style=for-the-badge
 [license-url]: https://github.com/frostygum/TicTacToe/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/juan-anthonius-005b04195/
+[linkedin-url]: https://www.linkedin.com/in/juan-anthonius-kusjadi/

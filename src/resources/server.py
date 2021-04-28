@@ -1,73 +1,115 @@
+
+#! Import required python built-in modules
 import socket 
-import threading
 import sys
+import json
+from functools import partial
+#! Import required PyQt5 modules
+from PyQt5.QtCore import QObject, pyqtSignal
 
-class Server():
-    def __init__(self, HOST = '127.0.0.1', PORT = 7000):
-        self.HOST = HOST
-        self.PORT = PORT
-        self.ADDR = (self.HOST, self.PORT)
-        self.HEADER = 1024
-        self.FORMAT = 'utf-8'
-        self.DISCONNECT_MESSAGE = '!DISCONNECT'
-        self.client = None
-        self.create_socket()
+class ServerReceive(QObject):
+    """
+        This class is used to create a server at a given ip address and port, it is also responsible 
+        for waiting for data in the form of json from the client. This class is used as a working class 
+        from the QThread class in PyQt5.
+    """
 
-    def create_socket(self):
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.bind(self.ADDR)
+    #! Preserved thread signals
+    started = pyqtSignal(bool)
+    connected = pyqtSignal(str)
+    received = pyqtSignal(str)
+    disconnected = pyqtSignal(bool)
+    error = pyqtSignal(bool)
+    #! Initialize class scope variables
+    DEFAULT_HOST = '127.0.0.1'
+    DEFAULT_PORT = 7000
+    HOST = DEFAULT_HOST
+    PORT = DEFAULT_PORT
+    HEADER = 1024
+    FORMAT = 'utf-8'
+    DISCONNECT_MESSAGE = '!DISCONNECT'
 
-    def handle_reply(self):
-        conn, addr = self.client
-        print('[NEW CONNECTION] {} connected.'.format(addr))
+    def createSocket(self):
+        """Function to create socket at given address"""
+
+        try:
+            self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server.bind((self.HOST, self.PORT))
+            self.server.listen(1)
+            #! Send started signal
+            self.started.emit(True)
+            return True
+        except Exception as e:
+            print('ERROR', e)
+            self.error.emit(True)
+            return False
+
+    def handleReceive(self):
+        """Function to handle receiving json game data"""
+
+        connection, addressInfo = self.client
+        print('[NEW CONNECTION] {} connected.'.format(addressInfo))
+        #! Initialize variables
         connected = True
+        data = None
 
+        #! Loop when host connected to client
         while connected:
             try:
-                msg = conn.recv(self.HEADER).decode(self.FORMAT)
-                if msg == self.DISCONNECT_MESSAGE:
+                #! Receiving data.
+                data = connection.recv(self.HEADER).decode(self.FORMAT)
+                if data == self.DISCONNECT_MESSAGE:
                     connected = False
             except:
-                print('[{}] Disconnected.'.format(addr))
-                self.wait_client()
+                #! If there is any troble with connection, assumed that client is disconnected
+                print('[{}] Disconnected.'.format(addressInfo))
                 connected = False
-                break
 
-            print('[{}] {}'.format(addr, msg))
+            # print('[{}] {}'.format(addr, msg))
+            #! Send received signal and the received data
+            self.received.emit(data)
 
-        conn.close()
+        #! Send disconnected signal
+        self.disconnected.emit(True)
+        #! Close connection with client
+        connection.close()
     
-    def wait_client(self):
-        conn, addr = self.server.accept()
-        self.create_client(conn, addr)
+    def waitClient(self):
+        """Function to wait incoming connection from client"""
+
+        connection, addressInfo = self.server.accept()
+        self.client = (connection, addressInfo)
+        #! Send connected signal
+        self.connected.emit(json.dumps({
+            'host': addressInfo[0],
+            'port': addressInfo[1]
+        }))
+        #! Start receiving loop
+        self.handleReceive()
 
     def send(self, msg):
-        conn, addr = self.client
-        message = msg.encode(self.FORMAT)
-        conn.send(message)
+        """Function to send string message to client"""
 
-    def create_client(self, conn, addr):
-        self.client = (conn, addr)
-        reply_thread = threading.Thread(target = self.handle_reply)
+        connection, _ = self.client
+        connection.send(msg.encode(self.FORMAT))
+
+    def run(self, host = None, port = None):
+        """Function to create server and should be called first when using thread"""
+
+        #! Bind given param to class scope variable
+        if host != None: self.HOST = host
+        if port != None: self.PORT = port
         
-        reply_thread.start()
-        print('[ACTIVE CONNECTIONS] {}'.format(threading.activeCount() - 1))
-        
-    def start(self):
-        self.server.listen()
-        print('[LISTENING] Server is listening on {}'.format(self.HOST))
-    
-        self.wait_client()
+        if self.createSocket():
+            print('[LISTENING] Server is listening on {}'.format(self.HOST))
+            self.waitClient()
 
-        # while True:
-        #     reply = input()
-        #     conn, _ = self.client
-        #     conn.send(reply.encode(self.FORMAT))
+    def stop(self):
+        """Function to properly close socket connection"""
 
-# if __name__ == '__main__':
-#     server = Server()
-#     try:
-#         server.start()
-#     except KeyboardInterrupt:
-#         print('Interrupted')
-#         sys.exit(0)
+        connection, _ = self.client
+        #! Send disconnect message
+        self.send(self.DISCONNECT_MESSAGE)
+        #! Close connection
+        connection.close()
+        self.server.close()
