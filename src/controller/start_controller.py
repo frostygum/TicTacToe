@@ -9,9 +9,6 @@ class StartController():
         This class is used as StartView Controller
     """
 
-    navigationWidget = None
-    mainView = None
-
     def __init__(self, app):
         """Function to initiate start window settings"""
         
@@ -48,8 +45,10 @@ class StartController():
             self.app.clearBoard()
             self.app.initServerThread()
             self.app.serverThread.start()
+            self.app.startView.buttons['create'].setEnabled(False)
+            self.app.startView.buttons['join'].setEnabled(False)
         else:
-            self.showDialog('Please fill Ip address first', 'Alert')
+            self.app.showDialog('Please fill Ip address first', 'Alert')
 
     def joinGame(self):
         """Ability for join button to join the game to given address"""
@@ -61,5 +60,7 @@ class StartController():
             self.app.clearBoard()
             self.app.initClientThread()
             self.app.clientThread.start()
+            self.app.startView.buttons['join'].setEnabled(False)
+            self.app.startView.buttons['create'].setEnabled(False)
         else:
-            self.showDialog('Please fill Ip address first', 'Alert')
+            self.app.showDialog('Please fill Ip address first', 'Alert')
