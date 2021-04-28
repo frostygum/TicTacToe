@@ -1,23 +1,14 @@
 
-#! Import required python built-in modules
-import sys
-from os import environ
 #! Import required PyQt5 modules
 from PyQt5.QtWidgets import QApplication, QStackedWidget, QMessageBox
 #! Import required self-made modules
-from view.start_view import StartView
-from view.game_view import GameView
-from model.board import Board
-from controller.start_controller import StartController
-from controller.game_controller import GameController
-from controller.serverThread import ServerThread
-from controller.clientThread import ClientThread
-
-def suppress_qt_warnings():
-    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
-    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
-    environ["QT_SCALE_FACTOR"] = "1"
+from src.view.start_view import StartView
+from src.view.game_view import GameView
+from src.model.board import Board
+from src.controller.start_controller import StartController
+from src.controller.game_controller import GameController
+from src.controller.serverThread import ServerThread
+from src.controller.clientThread import ClientThread
 
 class App(QApplication):
     def __init__(self, sys_argv):
@@ -62,15 +53,13 @@ class App(QApplication):
             window = self.startView
             controller = self.startController
             #! Reset sizing
-            self.navigationWidget.setWindowTitle('TicTacToe')
             self.navigationWidget.setFixedSize(330, 200)
         elif(windowPage == 'game'):
             #! Goto GGame Page
             window = self.gameView
             controller = self.gameController
             #! Reset sizing
-            self.navigationWidget.setWindowTitle('TicTacToe')
-            self.navigationWidget.setFixedSize(330, 360)
+            self.navigationWidget.setFixedSize(330, 420)
         
         #! Create empty status bar
         window.createStatusBar('')
@@ -110,13 +99,3 @@ class App(QApplication):
         #! Run any given callback after user close the dialog
         if callback != None:
             callback()
-
-def main():
-    app = App(sys.argv)
-    exec = app.exec_()
-    # app.main_controller.disconnect()
-    sys.exit(exec)
-
-if __name__ == '__main__':
-    suppress_qt_warnings()
-    main()

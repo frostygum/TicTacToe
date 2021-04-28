@@ -5,8 +5,8 @@ from functools import partial
 #! Import required PyQt5 modules
 from PyQt5.QtCore import QThread
 #! Import required self-made modules
-from model.board import Board
-from resources.server import ServerReceive
+from src.model.board import Board
+from src.resources.server import ServerReceive
 
 class ServerThread():
     """
@@ -17,6 +17,7 @@ class ServerThread():
         """Function to create box to store widgets"""
 
         self.app = app
+        self.disconnected = False
         
     def start(self):
         """Function to start the thread"""
@@ -57,6 +58,7 @@ class ServerThread():
 
     def handleDisconnected(self):
         try:
+            self.disconnected = True
             self.serverReceiveThread.terminate()
             self.serverReceiveWorker = None
             self.app.changeWindow('start')
@@ -75,6 +77,7 @@ class ServerThread():
         addressInfo = json.loads(addressInfo)
 
         self.sendState()
+        self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
         self.app.changeWindow('game')
         self.app.gameController.checkRightTurn()
         self.app.gameView.createStatusBar('Connected to {}:{}'.format(addressInfo['host'], addressInfo['port']))
@@ -89,7 +92,8 @@ class ServerThread():
     def stop(self):
         """Function to properly stop the server"""
 
-        #! Stop socket properly then destroy the thread
-        self.serverReceiveWorker.stop()
-        self.serverReceiveThread.terminate()
-        self.serverReceiveWorker = None
+        if self.disconnected == False:
+            #! Stop socket properly then destroy the thread
+            self.serverReceiveWorker.stop()
+            self.serverReceiveThread.terminate()
+            self.serverReceiveWorker = None

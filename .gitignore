@@ -1,4 +1,6 @@
 .vscode
-env/
 .env
+build
+dist
 *__pycache__
+*.spec

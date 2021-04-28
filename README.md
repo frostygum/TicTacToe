@@ -1,4 +1,6 @@
 
+# TicTacToe
+
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
 [![MIT License][license-shield]][license-url]
@@ -12,12 +14,14 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
+      <a href="#ScreenShoots">ScreenShoots</a>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#building-executeable-distribution">Build Executeable</a></li>
       </ul>
     </li>
     <li><a href="#license">License</a></li>
@@ -31,7 +35,28 @@
 
 TicTacToe is Python based Multiplayer TicTacToe game using TCP socket.
 
+<!-- ScreenShoots -->
+## ScreenShoots
 
+<div>
+  <p align="center">
+    Main Window
+  </p>
+  <p align="center">
+    <img src="docs/main_window.jpg" width="300">
+  </p>
+  <p align="center">
+    <img src="docs/waitClient_window.jpg" width="300">
+  </p>
+</div>
+
+<div>
+  <p align="center">
+    Game Window
+  </p>
+  <p align="center">
+    <img src="docs/play_window.jpg" width="300">
+</div>
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -71,6 +96,17 @@ This application running with python 3.7
 3. Install python packages
    ```sh
    pip install -r requirements.txt
+   ```
+
+### Building Executeable Distribution
+
+1. Distribution with console opened
+   ```
+   pyinstaller tictactoe.py --onefile --name TicTacToe
+   ```
+2. Distribution without console opened
+   ```sh
+   pyinstaller tictactoe.py -w --onefile --name TicTacToe
    ```
 
 
