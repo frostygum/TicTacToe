@@ -54,7 +54,6 @@ TicTacToe is Python based Multiplayer TicTacToe game using TCP socket.
   </p>
   <p align="center">
     <img src="docs/play_window.jpg" width="300">
-  </p>
 </div>
 
 <!-- GETTING STARTED -->
