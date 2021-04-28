@@ -87,7 +87,7 @@ class GameController():
 
         winner = self.checkGameRules()
         if winner == 0:
-            self.app.showDialog('Gave Over, Player {} Wins!'.format(self.app.board.turn), 'Game Over', self.gameOver)
+            self.app.showDialog('Gave Over, Player {} Wins!'.format(self.app.board.findOponent(self.app.board.player[self.app.board.turn])), 'Game Over', self.gameOver)
             return True
         elif winner == 2:
             self.app.showDialog('Gave Over, It\'s a Tie!', 'Game Over', self.gameOver)

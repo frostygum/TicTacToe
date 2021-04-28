@@ -78,6 +78,9 @@ class ClientThread():
 
         self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
         self.app.changeWindow('game')
+        self.app.startView.buttons['join'].setEnabled(True)
+        self.app.startView.buttons['create'].setEnabled(True)
+        self.app.gameController.checkRightTurn()
         self.app.gameView.createStatusBar('Connected to {}:{}'.format(addressInfo['host'], addressInfo['port']))
 
     def handleError(self):
