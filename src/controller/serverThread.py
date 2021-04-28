@@ -86,6 +86,8 @@ class ServerThread():
         """Function to handle error when creating socket emited"""
 
         self.app.showDialog(msg='Failed to connect to given address', title='Error')
+        self.app.startView.buttons['create'].setEnabled(True)
+        self.app.startView.buttons['join'].setEnabled(True)
         self.serverReceiveThread.terminate()
         self.serverReceiveWorker = None
 
