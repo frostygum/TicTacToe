@@ -60,19 +60,18 @@ class ServerReceive(QObject):
                 data = connection.recv(self.HEADER).decode(self.FORMAT)
                 if data == self.DISCONNECT_MESSAGE:
                     connected = False
+                else:
+                    #! Send received signal and the received data
+                    self.received.emit(data)
             except:
                 #! If there is any troble with connection, assumed that client is disconnected
                 print('[{}] Disconnected.'.format(addressInfo))
                 connected = False
-
-            # print('[{}] {}'.format(addr, msg))
-            #! Send received signal and the received data
-            self.received.emit(data)
-
+                #! Close connection with client
+                connection.close()
+                self.server.close()
         #! Send disconnected signal
         self.disconnected.emit(True)
-        #! Close connection with client
-        connection.close()
     
     def waitClient(self):
         """Function to wait incoming connection from client"""
@@ -104,6 +103,10 @@ class ServerReceive(QObject):
             print('[LISTENING] Server is listening on {}'.format(self.HOST))
             self.waitClient()
 
+    def closeServer(self):
+        """Function to properly close server port binding"""
+        self.server.close()
+
     def stop(self):
         """Function to properly close socket connection"""
 
@@ -112,4 +115,4 @@ class ServerReceive(QObject):
         self.send(self.DISCONNECT_MESSAGE)
         #! Close connection
         connection.close()
-        self.server.close()
+        self.closeServer()

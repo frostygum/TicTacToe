@@ -11,6 +11,7 @@ from model.board import Board
 from controller.start_controller import StartController
 from controller.game_controller import GameController
 from controller.serverThread import ServerThread
+from controller.clientThread import ClientThread
 
 def suppress_qt_warnings():
     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
@@ -46,6 +47,12 @@ class App(QApplication):
 
         self.serverThread = None
         self.serverThread = ServerThread(self)
+
+    def initClientThread(self):
+        """Function to instantiate client connection"""
+
+        self.clientThread = None
+        self.clientThread = ClientThread(self)
     
     def changeWindow(self, windowPage):
         """Function to change window with given param"""

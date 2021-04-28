@@ -6,9 +6,9 @@ from functools import partial
 from PyQt5.QtCore import QThread
 #! Import required self-made modules
 from model.board import Board
-from resources.server import ServerReceive
+from resources.client import ClientReceive
 
-class ServerThread():
+class ClientThread():
     """
         This class is responsible for creating thread to manage server
     """
@@ -25,24 +25,24 @@ class ServerThread():
         self.app.gameController.role = 'host'
 
         #! Thread initiation
-        self.serverReceiveThread = QThread()
-        self.serverReceiveWorker = ServerReceive()
-        self.serverReceiveWorker.moveToThread(self.serverReceiveThread)
+        self.clientReceiveThread = QThread()
+        self.clientReceiveWorker = ClientReceive()
+        self.clientReceiveWorker.moveToThread(self.clientReceiveThread)
 
         #! Emited when thread signal and worker signal started
-        self.serverReceiveThread.started.connect(partial(self.serverReceiveWorker.run, host=self.app.targetIp))
-        self.serverReceiveWorker.started.connect(partial(self.app.startView.createStatusBar, 'Waiting for Connection'))
+        self.clientReceiveThread.started.connect(partial(self.clientReceiveWorker.run, host=self.app.targetIp))
+        # self.clientReceiveWorker.started.connect(partial(self.app.startView.createStatusBar, 'Waiting for Connection'))
         #! Emited when worker signal connected, means connected to client
-        self.serverReceiveWorker.connected.connect(self.handleConnected)
+        self.clientReceiveWorker.connected.connect(self.handleConnected)
         #! Emited when worker signal received, means received data(game state)
-        self.serverReceiveWorker.received.connect(self.handleReceivedData)
+        self.clientReceiveWorker.received.connect(self.handleReceivedData)
         #! Emited when worker signal error, means server can'y bind to given address
-        self.serverReceiveWorker.error.connect(self.handleError)
+        self.clientReceiveWorker.error.connect(self.handleError)
         #! Emited when worker signal disconnected, means client has been disconected
-        self.serverReceiveWorker.disconnected.connect(self.handleDisconnected)
+        self.clientReceiveWorker.disconnected.connect(self.handleDisconnected)
         
         #! Start the thread
-        self.serverReceiveThread.start()
+        self.clientReceiveThread.start()
 
     def handleReceivedData(self, gameBoard):
         """Function to handle received board from opponent"""
@@ -53,43 +53,42 @@ class ServerThread():
             board = json.loads(gameBoard)
             self.app.gameController.handleReceiveUpdate(board)
         except Exception as e:
-            print('ERROR[HRD-ST]', e)
+            print('ERROR[HRD-CT]', e)
 
     def handleDisconnected(self):
         try:
-            self.serverReceiveThread.terminate()
+            self.clientReceiveThread.terminate()
             self.serverReceiveWorker = None
             self.app.changeWindow('start')
         except Exception as e:
-            print('ERROR[HD-ST]', e)
+            print('ERROR[HD-CT]', e)
 
     def sendState(self):
         """Function to handle sending current game state as JSON string"""
 
         state = self.app.board.toJSON()
-        self.serverReceiveWorker.send(state)
+        self.clientReceiveWorker.send(state)
 
     def handleConnected(self, addressInfo):
         """Function to handle new connection emited"""
 
         addressInfo = json.loads(addressInfo)
 
-        self.sendState()
+        # self.sendState()
         self.app.changeWindow('game')
-        self.app.gameController.checkRightTurn()
         self.app.gameView.createStatusBar('Connected to {}:{}'.format(addressInfo['host'], addressInfo['port']))
 
     def handleError(self):
         """Function to handle error when creating socket emited"""
 
         self.app.showDialog(msg='Failed to connect to given address', title='Error')
-        self.serverReceiveThread.terminate()
-        self.serverReceiveWorker = None
+        self.clientReceiveThread.terminate()
+        self.clientReceiveWorker = None
 
     def stop(self):
         """Function to properly stop the server"""
 
-        #! Stop socket properly then destroy the thread
-        self.serverReceiveWorker.stop()
-        self.serverReceiveThread.terminate()
-        self.serverReceiveWorker = None
+         #! Stop socket properly then destroy the thread
+        self.clientReceiveWorker.stop()
+        self.clientReceiveThread.terminate()
+        self.clientReceiveWorker = None

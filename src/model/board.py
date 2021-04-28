@@ -32,8 +32,8 @@ class Board():
             'client': None
         }
 
-        self.player['host'] = 'X' #? DEV
-        #self.symbols[randint(0, 1)]
+        # self.player['host'] = 'X' #? DEV
+        self.player['host'] = self.symbols[randint(0, 1)]
         self.player['client'] = self.findOponent(self.player['host'])
         #! Set turn to player that assigned as 'X' to play first
         self.turn = [player for player, symbol in self.player.items() if symbol == 'X'][0]
