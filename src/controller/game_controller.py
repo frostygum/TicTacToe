@@ -51,7 +51,10 @@ class GameController():
                 self.app.board.updateLocation(symbol, location)
                 self.app.gameView.updateButton(symbol, location, False)
 
-        self.app.board.player = gameBoard['player']
+        if self.app.board.player != gameBoard['player']:
+            self.app.board.player = gameBoard['player']
+            self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
+        
         self.app.board.turn = gameBoard['turn']
         self.app.board.move = gameBoard['move']
 
