@@ -25,13 +25,21 @@
 </details>
 
 
-
+# TicTacToe
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 TicTacToe is Python based Multiplayer TicTacToe game using TCP socket.
 
+<!-- ScreenShoots -->
+## ScreenShoots
 
+*Main Window*
+<img src="docs/main_window.jpg" width="200">
+<img src="docs/waitClient_window.jpg" width="200">
+
+*Play Window*
+<img src="docs/play_window.jpg" width="200">
 
 <!-- GETTING STARTED -->
 ## Getting Started

@@ -17,6 +17,7 @@ class ClientThread():
         """Function to create box to store widgets"""
 
         self.app = app
+        self.disconnected = False
         
     def start(self):
         """Function to start the thread"""
@@ -57,6 +58,7 @@ class ClientThread():
 
     def handleDisconnected(self):
         try:
+            self.disconnected = True
             self.clientReceiveThread.terminate()
             self.serverReceiveWorker = None
             self.app.changeWindow('start')
@@ -88,7 +90,8 @@ class ClientThread():
     def stop(self):
         """Function to properly stop the server"""
 
-         #! Stop socket properly then destroy the thread
-        self.clientReceiveWorker.stop()
-        self.clientReceiveThread.terminate()
-        self.clientReceiveWorker = None
+        if self.disconnected == False:
+            #! Stop socket properly then destroy the thread
+            self.clientReceiveWorker.stop()
+            self.clientReceiveThread.terminate()
+            self.clientReceiveWorker = None
