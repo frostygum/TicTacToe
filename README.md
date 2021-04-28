@@ -41,8 +41,10 @@ TicTacToe is Python based Multiplayer TicTacToe game using TCP socket.
     Main Window
   </p>
   <p align="center">
-    <img src="docs/main_window.jpg" width="200">
-    <img src="docs/waitClient_window.jpg" width="200">
+    <img src="docs/main_window.jpg" width="300">
+  </p>
+  <p align="center">
+    <img src="docs/waitClient_window.jpg" width="300">
   </p>
 </div>
 
@@ -51,7 +53,7 @@ TicTacToe is Python based Multiplayer TicTacToe game using TCP socket.
     Game Window
   </p>
   <p align="center">
-    <img src="docs/play_window.jpg" width="200">
+    <img src="docs/play_window.jpg" width="300">
   </p>
 </div>
 
