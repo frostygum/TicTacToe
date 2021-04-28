@@ -100,11 +100,11 @@ This application running with python 3.7
 
 ### Building Executeable Distribution
 
-1. Distribution with console openned
+1. Distribution with console opened
    ```
    pyinstaller tictactoe.py --onefile --name TicTacToe
    ```
-2. Distribution without console openned
+2. Distribution without console opened
    ```sh
    pyinstaller tictactoe.py -w --onefile --name TicTacToe
    ```
