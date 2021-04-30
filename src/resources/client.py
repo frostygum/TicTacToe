@@ -19,6 +19,7 @@ class ClientReceive(QObject):
     received = pyqtSignal(str)
     disconnected = pyqtSignal(bool)
     error = pyqtSignal(bool)
+    playAgain = pyqtSignal(bool)
     #! Initialize class scope variables
     DEFAULT_HOST = '127.0.0.1'
     DEFAULT_PORT = 7000
@@ -27,6 +28,7 @@ class ClientReceive(QObject):
     HEADER = 1024
     FORMAT = 'utf-8'
     DISCONNECT_MESSAGE = '!DISCONNECT'
+    PLAY_AGAIN_MESSAGE = '!PLAY_AGAIN'
 
     def createSocket(self):
         """Function to create and connect socket at given address"""
@@ -59,6 +61,8 @@ class ClientReceive(QObject):
                 data = self.client.recv(self.HEADER).decode(self.FORMAT)
                 if data == self.DISCONNECT_MESSAGE:
                     connected = False
+                elif data == self.PLAY_AGAIN_MESSAGE:
+                    self.playAgain.emit(True)
                 else:
                     #! Send received signal and the received data
                     self.received.emit(data)
@@ -71,7 +75,14 @@ class ClientReceive(QObject):
         #! Send disconnected signal
         self.disconnected.emit(True)
 
+    def requestPlayAgain(self):
+        """Function to handle request to play again"""
+
+        self.send(self.PLAY_AGAIN_MESSAGE)
+
     def send(self, msg):
+        """Function to handle sending message to server"""
+
         self.client.send(msg.encode(self.FORMAT))
 
     def run(self, host = None, port = None):
@@ -90,5 +101,4 @@ class ClientReceive(QObject):
     def stop(self):
         """Function to properly close socket connection"""
 
-        # self.send(self.DISCONNECT_MESSAGE)
         self.client.close()

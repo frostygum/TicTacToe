@@ -18,6 +18,7 @@ class ClientThread():
 
         self.app = app
         self.disconnected = False
+        self.again = False
         
     def start(self):
         """Function to start the thread"""
@@ -41,26 +42,31 @@ class ClientThread():
         self.clientReceiveWorker.error.connect(self.handleError)
         #! Emited when worker signal disconnected, means client has been disconected
         self.clientReceiveWorker.disconnected.connect(self.handleDisconnected)
+        #! Emited when worker signal get request to play again
+        self.clientReceiveWorker.playAgain.connect(self.handlePlayAgain)
         
         #! Start the thread
         self.clientReceiveThread.start()
 
-    def handleReceivedData(self, gameBoard):
-        """Function to handle received board from opponent"""
+    def handleReceivedData(self, message):
+        """Function to handle received message from opponent"""
 
-        #! If received data can't be parsed by JSON parser
-        #! Prevent app from crashed
+        #! If received data can't be parsed by JSON parser (not a board)
+        #! Check if received data = 'again'
+        #! Prevent app from crasheds
         try:
-            board = json.loads(gameBoard)
+            board = json.loads(message)
             self.app.gameController.handleReceiveUpdate(board)
         except Exception as e:
-            print('ERROR[HRD-CT]', e)
+            print('ERROR[HRD-ST]', e)
 
     def handleDisconnected(self):
         try:
             self.disconnected = True
             self.clientReceiveThread.terminate()
             self.serverReceiveWorker = None
+            self.app.round = 1
+            self.app.endView.emptyList()
             self.app.changeWindow('start')
         except Exception as e:
             print('ERROR[HD-CT]', e)
@@ -100,3 +106,23 @@ class ClientThread():
             self.clientReceiveWorker.stop()
             self.clientReceiveThread.terminate()
             self.clientReceiveWorker = None
+            
+    def sendAgain(self):
+        """Function to handle message for play again"""
+
+        self.clientReceiveWorker.requestPlayAgain()
+        self.app.endView.createStatusBar('Waiting for Other Player to Join')
+        self.handlePlayAgain()
+
+    def handlePlayAgain(self):
+        """Function to handle play again condition"""
+        
+        if self.again == True:
+            self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
+            self.app.changeWindow('game')
+            self.app.endView.buttons['play'].setEnabled(True)
+            self.app.endView.buttons['exit'].setEnabled(True)
+            self.app.gameController.checkRightTurn()
+            self.again = False
+        else:
+            self.again = True

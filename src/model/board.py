@@ -8,7 +8,7 @@ class Board():
         This class is used store in-game state
     """
 
-    def __init__(self):
+    def __init__(self, round):
         """Function to create pre-defined state"""
 
         #! Initialize class scope variables
@@ -32,8 +32,12 @@ class Board():
             'client': None
         }
 
-        # self.player['host'] = 'X' #? DEV
-        self.player['host'] = self.symbols[randint(0, 1)]
+        #! Check if round is odd or even to assign the role base on the round
+        if(round % 2 == 1):
+            self.player['host'] = self.symbols[0]
+        else:
+            self.player['host'] = self.symbols[1]
+        
         self.player['client'] = self.findOponent(self.player['host'])
         #! Set turn to player that assigned as 'X' to play first
         self.turn = [player for player, symbol in self.player.items() if symbol == 'X'][0]
