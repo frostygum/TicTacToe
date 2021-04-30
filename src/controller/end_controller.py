@@ -25,6 +25,16 @@ class EndController():
     def playGame(self):
         """Ability for play button to play again"""
 
+        self.app.clearBoard()
+        self.app.endView.buttons['play'].setEnabled(False)
+        self.app.endView.buttons['exit'].setEnabled(False)
+
+        #! Run the game when ip valid
+        if self.app.role == 'host':
+            self.app.serverThread.sendAgain()
+        else:
+            self.app.clientThread.sendAgain()
+
     def exitGame(self):
         """Ability for exit button to return to start window"""
 

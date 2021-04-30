@@ -18,6 +18,7 @@ class ServerThread():
 
         self.app = app
         self.disconnected = False
+        self.again = False
         
     def start(self):
         """Function to start the thread"""
@@ -45,16 +46,20 @@ class ServerThread():
         #! Start the thread
         self.serverReceiveThread.start()
 
-    def handleReceivedData(self, gameBoard):
-        """Function to handle received board from opponent"""
+    def handleReceivedData(self, message):
+        """Function to handle received message from opponent"""
 
-        #! If received data can't be parsed by JSON parser
+        #! If received data can't be parsed by JSON parser (not a board)
+        #! Check if received data = 'again'
         #! Prevent app from crashed
         try:
-            board = json.loads(gameBoard)
+            board = json.loads(message)
             self.app.gameController.handleReceiveUpdate(board)
         except Exception as e:
-            print('ERROR[HRD-ST]', e)
+            if message == 'again':
+                self.handlePlayAgain()
+            else:
+                print('ERROR[HRD-ST]', e)
 
     def handleDisconnected(self):
         try:
@@ -101,3 +106,22 @@ class ServerThread():
             self.serverReceiveWorker.stop()
             self.serverReceiveThread.terminate()
             self.serverReceiveWorker = None
+
+    def sendAgain(self):
+        """Function to handle message for play again"""
+
+        message = 'again'
+        self.serverReceiveWorker.send('again')
+        self.app.endView.createStatusBar('Waiting for Other Player to Join')
+        self.handlePlayAgain()
+
+    def handlePlayAgain(self):
+        """Function to handle play again condition"""
+
+        if self.again == True:
+            self.app.changeWindow('game')
+            self.app.endView.buttons['play'].setEnabled(True)
+            self.app.endView.buttons['exit'].setEnabled(True)
+            self.again = False
+        else:
+            self.again = True
