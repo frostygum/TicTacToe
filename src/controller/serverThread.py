@@ -42,6 +42,8 @@ class ServerThread():
         self.serverReceiveWorker.error.connect(self.handleError)
         #! Emited when worker signal disconnected, means client has been disconected
         self.serverReceiveWorker.disconnected.connect(self.handleDisconnected)
+        #! Emited when worker signal get request to play again
+        self.serverReceiveWorker.playAgain.connect(self.handlePlayAgain)
         
         #! Start the thread
         self.serverReceiveThread.start()
@@ -56,10 +58,7 @@ class ServerThread():
             board = json.loads(message)
             self.app.gameController.handleReceiveUpdate(board)
         except Exception as e:
-            if message == 'again':
-                self.handlePlayAgain()
-            else:
-                print('ERROR[HRD-ST]', e)
+            print('ERROR[HRD-ST]', e)
 
     def handleDisconnected(self):
         try:
@@ -112,8 +111,7 @@ class ServerThread():
     def sendAgain(self):
         """Function to handle message for play again"""
 
-        message = 'again'
-        self.serverReceiveWorker.send('again')
+        self.serverReceiveWorker.requestPlayAgain()
         self.app.endView.createStatusBar('Waiting for Other Player to Join')
         self.handlePlayAgain()
 
