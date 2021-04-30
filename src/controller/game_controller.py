@@ -142,5 +142,4 @@ class GameController():
         # else:
         #     self.app.clientThread.stop()
         #! Reset all button symbols
-        self.app.clearBoard()
         self.app.changeWindow('end')

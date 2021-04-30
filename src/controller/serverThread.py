@@ -119,9 +119,12 @@ class ServerThread():
         """Function to handle play again condition"""
 
         if self.again == True:
+            self.sendState()
+            self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
             self.app.changeWindow('game')
             self.app.endView.buttons['play'].setEnabled(True)
             self.app.endView.buttons['exit'].setEnabled(True)
+            self.app.gameController.checkRightTurn()
             self.again = False
         else:
             self.again = True
