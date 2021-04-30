@@ -87,11 +87,11 @@ This application running with python 3.7
 
 1. Create python virtual env
    ```
-   python -m venv env
+   python -m venv .env
    ```
 2. Activate virtual env
    ```sh
-   & ./env/Scripts/Activate.ps1
+   Set-ExecutionPolicy Bypass -Scope Process -Force; & ./.env/Scripts/Activate.ps1
    ```
 3. Install python packages
    ```sh
