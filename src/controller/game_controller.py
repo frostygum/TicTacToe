@@ -137,10 +137,10 @@ class GameController():
     def gameOver(self):
         """Function to handle when received update from opponent"""
 
-        if self.app.role == 'host':
-            self.app.serverThread.stop()
-        else:
-            self.app.clientThread.stop()
+        # if self.app.role == 'host':
+        #     self.app.serverThread.stop()
+        # else:
+        #     self.app.clientThread.stop()
         #! Reset all button symbols
         self.app.clearBoard()
-        self.app.changeWindow('start')
+        self.app.changeWindow('end')

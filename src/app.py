@@ -4,9 +4,11 @@ from PyQt5.QtWidgets import QApplication, QStackedWidget, QMessageBox
 #! Import required self-made modules
 from src.view.start_view import StartView
 from src.view.game_view import GameView
+from src.view.end_view import EndView
 from src.model.board import Board
 from src.controller.start_controller import StartController
 from src.controller.game_controller import GameController
+from src.controller.end_controller import EndController
 from src.controller.serverThread import ServerThread
 from src.controller.clientThread import ClientThread
 
@@ -23,9 +25,11 @@ class App(QApplication):
 
         self.startView = StartView()
         self.gameView = GameView()
+        self.endView = EndView()
         
         self.startController = StartController(self)
         self.gameController = GameController(self)
+        self.endController = EndController(self)
         # self.initServerThread()
         
         self.navigationWidget.setWindowTitle('TicTacToe')
@@ -55,9 +59,15 @@ class App(QApplication):
             #! Reset sizing
             self.navigationWidget.setFixedSize(330, 200)
         elif(windowPage == 'game'):
-            #! Goto GGame Page
+            #! Goto Game Page
             window = self.gameView
             controller = self.gameController
+            #! Reset sizing
+            self.navigationWidget.setFixedSize(330, 420)
+        elif(windowPage == 'end'):
+            #! Goto End Page
+            window = self.endView
+            controller = self.endController
             #! Reset sizing
             self.navigationWidget.setFixedSize(330, 420)
         
