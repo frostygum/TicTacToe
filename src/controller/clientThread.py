@@ -66,6 +66,8 @@ class ClientThread():
             self.disconnected = True
             self.clientReceiveThread.terminate()
             self.serverReceiveWorker = None
+            self.app.round = 1
+            self.app.endView.emptyList()
             self.app.changeWindow('start')
         except Exception as e:
             print('ERROR[HD-CT]', e)

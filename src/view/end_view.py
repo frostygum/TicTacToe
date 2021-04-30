@@ -36,7 +36,7 @@ class EndView(QMainWindow):
         self.createGameButton()
 
     def createListWidget(self):
-        """Function to create list view for game record"""
+        """Function to create list widget for game record"""
 
         #! Create List Widget
         self.listWidget = QListWidget()
@@ -69,5 +69,14 @@ class EndView(QMainWindow):
         self.setStatusBar(status)
 
     def createListWidgetItem(self, item):
+        """Function to create item inside list widget"""
+
         item = QListWidgetItem(item)
         self.listWidget.insertItem(0, item)
+
+    def emptyList(self):
+        """Function to emptying list widget"""
+        
+        self.verticalLayout.removeWidget(self.listWidget)
+        self.listWidget = QListWidget()
+        self.verticalLayout.insertWidget(0, self.listWidget)

@@ -66,6 +66,8 @@ class ServerThread():
             self.disconnected = True
             self.serverReceiveThread.terminate()
             self.serverReceiveWorker = None
+            self.app.round = 1
+            self.app.endView.emptyList()
             self.app.changeWindow('start')
         except Exception as e:
             print('ERROR[HD-ST]', e)
