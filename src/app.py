@@ -19,7 +19,8 @@ class App(QApplication):
         super(App, self).__init__(sys_argv)
 
         self.navigationWidget = QStackedWidget()
-        self.board = Board()
+        self.round = 1
+        self.board = Board(self.round)
         self.role = None
         self.targetIp = None
 
@@ -82,7 +83,7 @@ class App(QApplication):
         """Function to clear current board"""
 
         self.board = None
-        self.board = Board()
+        self.board = Board(self.round)
 
         for xPos in range(0, 3):
             for yPos in  range(0, 3):

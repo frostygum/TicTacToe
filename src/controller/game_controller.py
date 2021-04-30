@@ -87,10 +87,24 @@ class GameController():
 
         winner = self.checkGameRules()
         if winner == 0:
-            self.app.showDialog('Gave Over, Player {} Wins!'.format(self.app.board.findOponent(self.app.board.player[self.app.board.turn])), 'Game Over', self.gameOver)
+            self.app.showDialog('Game Over, Player {} Wins!'.format(self.app.board.findOponent(self.app.board.player[self.app.board.turn])), 'Game Over', self.gameOver)
+            if(self.app.round % 2 == 1):
+                if(self.app.board.findOponent(self.app.board.player[self.app.board.turn]) == 'X'):
+                    self.app.endView.createListWidgetItem('Round {} : Player Host Win'.format(self.app.round))
+                else:
+                    self.app.endView.createListWidgetItem('Round {} : Player Client Win'.format(self.app.round))
+            else:
+                if(self.app.board.findOponent(self.app.board.player[self.app.board.turn]) == 'O'):
+                    self.app.endView.createListWidgetItem('Round {} : Player Host Win'.format(self.app.round))
+                else:
+                    self.app.endView.createListWidgetItem('Round {} : Player Client Win'.format(self.app.round))
+
+            self.app.round += 1
             return True
         elif winner == 2:
-            self.app.showDialog('Gave Over, It\'s a Tie!', 'Game Over', self.gameOver)
+            self.app.showDialog('Game Over, It\'s a Tie!', 'Game Over', self.gameOver)
+            self.app.endView.createListWidgetItem('Round {} : Tie'.format(self.app.round))
+            self.app.round += 1
             return True
 
         return False
@@ -135,11 +149,7 @@ class GameController():
                 self.app.gameView.buttons[location].setEnabled(enable)
 
     def gameOver(self):
-        """Function to handle when received update from opponent"""
+        """Function to handle when the game is over"""
 
-        # if self.app.role == 'host':
-        #     self.app.serverThread.stop()
-        # else:
-        #     self.app.clientThread.stop()
-        #! Reset all button symbols
+        #! Open End View
         self.app.changeWindow('end')

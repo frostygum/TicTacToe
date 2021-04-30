@@ -1,8 +1,8 @@
 
 #! Import required PyQt5 modules
-from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QHBoxLayout, QMainWindow, QWidget, QLabel, QListView, QStatusBar
+from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QHBoxLayout, QMainWindow, QWidget, QListWidgetItem, QListWidget, QStatusBar
 from PyQt5.QtGui import QCursor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 
 class EndView(QMainWindow):
     """
@@ -11,6 +11,7 @@ class EndView(QMainWindow):
 
     #! Initialize class scope variables
     buttons = {}
+    listWidget = None
 
     def __init__(self):
         """Function to create box to store widgets"""
@@ -21,7 +22,8 @@ class EndView(QMainWindow):
             'QMainWindow { background-color: pink; }'
             'QPushButton { background-color: cyan; border: none; padding: 10px; border-radius: 5px; }'
             'QPushButton:hover { background-color: white; }'
-            'QListView { background-color: pink; }'
+            'QListWidget { background-color: pink; }'
+            'QListWidget::item { padding: 10px }'
         )
         #! Set the central widget and the general layout
         self.verticalLayout = QVBoxLayout()
@@ -30,16 +32,16 @@ class EndView(QMainWindow):
         self.centralWidget.setLayout(self.verticalLayout)
         
         #! Create init views
-        self.createListView()
+        self.createListWidget()
         self.createGameButton()
 
-    def createListView(self):
+    def createListWidget(self):
         """Function to create list view for game record"""
 
-        #! Create List View
-        listView = QListView()
-        #! Add List View to Vertical Box Layout
-        self.verticalLayout.addWidget(listView)
+        #! Create List Widget
+        self.listWidget = QListWidget()
+        #! Add List Widget to Vertical Box Layout
+        self.verticalLayout.addWidget(self.listWidget)
 
     def createGameButton(self):
         """Function to create play button and exit button"""
@@ -65,3 +67,7 @@ class EndView(QMainWindow):
         status = QStatusBar()
         status.showMessage(msg)
         self.setStatusBar(status)
+
+    def createListWidgetItem(self, item):
+        item = QListWidgetItem(item)
+        self.listWidget.insertItem(0, item)
