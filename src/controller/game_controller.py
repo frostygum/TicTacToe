@@ -134,7 +134,7 @@ class GameController():
             elif state['02'] == state['11'] == state['20'] != None:
                 condition = 0
         #! Why 9 ? 9 move means all boxes has already filled with symbols but no one wins
-        if self.app.board.move == 9:
+        elif self.app.board.move == 9:
             condition = 2
 
         return condition
