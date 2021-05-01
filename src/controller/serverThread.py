@@ -66,6 +66,8 @@ class ServerThread():
             self.serverReceiveThread.terminate()
             self.serverReceiveWorker = None
             self.app.round = 1
+            self.app.hostCount = 0
+            self.app.clientCount = 0
             self.app.endView.emptyList()
             self.app.changeWindow('start')
         except Exception as e:
@@ -83,7 +85,7 @@ class ServerThread():
         addressInfo = json.loads(addressInfo)
 
         self.sendState()
-        self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
+        self.app.gameView.title.setText('Hello {}, You are [{}]'.format(self.app.role.upper(), self.app.board.player[self.app.role]))
         self.app.changeWindow('game')
         self.app.startView.buttons['join'].setEnabled(True)
         self.app.startView.buttons['create'].setEnabled(True)
@@ -120,7 +122,7 @@ class ServerThread():
 
         if self.again == True:
             self.sendState()
-            self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
+            self.app.gameView.title.setText('Hello {}, You are [{}]'.format(self.app.role.upper(), self.app.board.player[self.app.role]))
             self.app.changeWindow('game')
             self.app.endView.buttons['play'].setEnabled(True)
             self.app.endView.buttons['exit'].setEnabled(True)

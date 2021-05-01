@@ -1,6 +1,6 @@
 
 #! Import required PyQt5 modules
-from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QHBoxLayout, QMainWindow, QWidget, QListWidgetItem, QListWidget, QStatusBar
+from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QHBoxLayout, QMainWindow, QWidget, QListWidgetItem, QListWidget, QStatusBar, QLabel
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt, QSize
 
@@ -33,6 +33,7 @@ class EndView(QMainWindow):
         
         #! Create init views
         self.createListWidget()
+        self.createCount()
         self.createGameButton()
 
     def createListWidget(self):
@@ -42,6 +43,43 @@ class EndView(QMainWindow):
         self.listWidget = QListWidget()
         #! Add List Widget to Vertical Box Layout
         self.verticalLayout.addWidget(self.listWidget)
+
+    def createCount(self):
+        """Function to create win counter at EndView"""
+
+        #! Create Box Layout to store Counter
+        horizontalLayout = QHBoxLayout()
+        #! Create Box Layout to store Host Counter
+        horizontalLayoutHost = QHBoxLayout()
+        #! Create Box Layout to store Client Counter
+        horizontalLayoutClient = QHBoxLayout()
+        #! Create Label for Host
+        labelHost = QLabel()
+        labelHost.setText('Host: ')
+        labelHost.setStyleSheet('margin-bottom: 10px; margin-top: 10px; max-width: 35px;')
+        horizontalLayoutHost.addWidget(labelHost)
+        #! Create count for Host
+        self.countHost = QLabel()
+        self.countHost.setText('')
+        self.countHost.setStyleSheet('margin-bottom: 10px; margin-top: 10px;')
+        horizontalLayoutHost.addWidget(self.countHost)
+        #! Create Label for Client
+        labelClient = QLabel()
+        labelClient.setText('Client: ')
+        labelClient.setStyleSheet('margin-bottom: 10px; margin-top: 10px; max-width: 35px;')
+        horizontalLayoutClient.addWidget(labelClient)
+        #! Create count for Host
+        self.countClient = QLabel()
+        self.countClient.setText('')
+        self.countClient.setStyleSheet('margin-bottom: 10px; margin-top: 10px;')
+        horizontalLayoutClient.addWidget(self.countClient)
+        #! Add Horizontal Box Layout Host to Horizontal Box Layout
+        horizontalLayout.addLayout(horizontalLayoutHost)
+        #! Add Horizontal Box Layout Client to Horizontal Box Layout
+        horizontalLayout.addLayout(horizontalLayoutClient)
+        #! Add Horizontal Box Layout to Vertical Box Layout
+        self.verticalLayout.addLayout(horizontalLayout)
+
 
     def createGameButton(self):
         """Function to create play button and exit button"""

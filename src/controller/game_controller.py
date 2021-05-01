@@ -53,7 +53,7 @@ class GameController():
 
         if self.app.board.player != gameBoard['player']:
             self.app.board.player = gameBoard['player']
-            self.app.gameView.title.setText('You are [{}]'.format(self.app.board.player[self.app.role]))
+            self.app.gameView.title.setText('Hello {}, You are [{}]'.format(self.app.role.upper(), self.app.board.player[self.app.role]))
         
         self.app.board.turn = gameBoard['turn']
         self.app.board.move = gameBoard['move']
@@ -72,7 +72,7 @@ class GameController():
                 location = '{}{}'.format(xPos, yPos)
                 #! Disable button when current is not my turn
                 if self.app.board.turn != self.app.role:
-                    self.app.gameView.subTitle.setText('waiting for opponent')
+                    self.app.gameView.subTitle.setText('Waiting for opponent')
                     self.app.gameView.buttons[location].setEnabled(False)
                 else:
                     #! Enable only empty button when current is my turn, disable the other
@@ -88,17 +88,24 @@ class GameController():
         winner = self.checkGameRules()
         if winner == 0:
             self.app.showDialog('Game Over, Player {} Wins!'.format(self.app.board.findOponent(self.app.board.player[self.app.board.turn])), 'Game Over', self.gameOver)
-            if(self.app.round % 2 == 1):
-                if(self.app.board.findOponent(self.app.board.player[self.app.board.turn]) == 'X'):
-                    self.app.endView.createListWidgetItem('Round {} : Player Host Win'.format(self.app.round))
+            if self.app.round % 2 == 1:
+                if self.app.board.findOponent(self.app.board.player[self.app.board.turn]) == 'X':
+                    self.app.endView.createListWidgetItem('Round {}: Player Host Win'.format(self.app.round))
+                    self.app.hostCount += 1
                 else:
-                    self.app.endView.createListWidgetItem('Round {} : Player Client Win'.format(self.app.round))
-            else:
-                if(self.app.board.findOponent(self.app.board.player[self.app.board.turn]) == 'O'):
-                    self.app.endView.createListWidgetItem('Round {} : Player Host Win'.format(self.app.round))
-                else:
-                    self.app.endView.createListWidgetItem('Round {} : Player Client Win'.format(self.app.round))
+                    self.app.endView.createListWidgetItem('Round {}: Player Client Win'.format(self.app.round))
+                    self.app.clientCount += 1
 
+            else:
+                if self.app.board.findOponent(self.app.board.player[self.app.board.turn]) == 'O':
+                    self.app.endView.createListWidgetItem('Round {}: Player Host Win'.format(self.app.round))
+                    self.app.hostCount += 1
+                else:
+                    self.app.endView.createListWidgetItem('Round {}: Player Client Win'.format(self.app.round))
+                    self.app.clientCount += 1
+
+            self.app.endView.countHost.setText('{} Win'.format(self.app.hostCount))
+            self.app.endView.countClient.setText('{} Win'.format(self.app.clientCount))
             self.app.round += 1
             return True
         elif winner == 2:
@@ -133,6 +140,7 @@ class GameController():
                 condition = 0
             elif state['02'] == state['11'] == state['20'] != None:
                 condition = 0
+
         #! Why 9 ? 9 move means all boxes has already filled with symbols but no one wins
         elif self.app.board.move == 9:
             condition = 2
