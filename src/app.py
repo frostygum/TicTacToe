@@ -20,6 +20,8 @@ class App(QApplication):
 
         self.navigationWidget = QStackedWidget()
         self.round = 1
+        self.hostCount = 0
+        self.clientCount = 0
         self.board = Board(self.round)
         self.role = None
         self.targetIp = None

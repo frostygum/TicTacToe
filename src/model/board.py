@@ -33,7 +33,7 @@ class Board():
         }
 
         #! Check if round is odd or even to assign the role base on the round
-        if(round % 2 == 1):
+        if round % 2 == 1:
             self.player['host'] = self.symbols[0]
         else:
             self.player['host'] = self.symbols[1]
